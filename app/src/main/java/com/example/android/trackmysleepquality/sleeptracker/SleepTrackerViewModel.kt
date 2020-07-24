@@ -84,7 +84,7 @@ class SleepTrackerViewModel(
 
     fun onClear() {
         uiScope.launch {
-            database.clear()
+            clearNightFromDatabase()
         }
     }
 
@@ -115,11 +115,5 @@ class SleepTrackerViewModel(
             database.clear()
         }
     }
-
-
-
-
-
-
 }
 
