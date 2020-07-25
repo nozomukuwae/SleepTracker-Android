@@ -13,9 +13,9 @@
 
         <ImageView
                 android:id="@+id/quality_image"
+                app:sleepQualityImage="@{night}"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                app:srcCompat="@drawable/ic_sleep_5"
                 tools:srcCompat="@drawable/ic_sleep_5"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
@@ -25,6 +25,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
         <TextView
                 android:id="@+id/sleep_length"
+                app:sleepDurationFormatted="@{night}"
                 android:text="TextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
                 tools:text="Wednesday"/>
         <TextView
                 android:text="TextView"
+                app:sleepQualityString="@{night}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/quality_string" app:layout_constraintStart_toEndOf="@+id/quality_image"
