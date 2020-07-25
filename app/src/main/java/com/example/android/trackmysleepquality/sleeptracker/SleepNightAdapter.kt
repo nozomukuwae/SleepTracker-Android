@@ -6,29 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 
-class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
-    var data = listOf<SleepNight>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SleepNightAdapter.ViewHolder {
         return ViewHolder.from(parent)
     }
 
-    override fun getItemCount(): Int = data.size
-
     override fun onBindViewHolder(holder: SleepNightAdapter.ViewHolder, position: Int) {
-        val item = data[position]
-        val res = holder.itemView.context.resources
-        holder.bind(item, res)
+        val item = getItem(position)
+        holder.bind(item)
     }
 
     class ViewHolder private constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -44,7 +38,8 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
             }
         }
 
-        fun bind(item: SleepNight, res: Resources) {
+        fun bind(item: SleepNight) {
+            val res = itemView.context.resources
             sleepLength.text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
             qualityText.text = convertNumericQualityToString(item.sleepQuality, res)
             qualityImage.setImageResource(when (item.sleepQuality) {
@@ -57,5 +52,15 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
                 else -> R.drawable.ic_sleep_active
             })
         }
+    }
+}
+
+class SleepNightDiffCallback: DiffUtil.ItemCallback<SleepNight>() {
+    override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+        return oldItem.nightId == newItem.nightId
+    }
+
+    override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+        return oldItem == newItem
     }
 }
